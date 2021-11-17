@@ -2,6 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 import styles from "../styles/Home.module.css";
+import Link from "next/link";
 
 export default function Home({ launches }) {
   console.log("launches", launches);
@@ -23,32 +24,31 @@ export default function Home({ launches }) {
         <div className={styles.grid}>
           {launches.map((launch) => {
             return (
-              <a
-                key={launch.id}
-                href={launch.links.video_link}
-                className={styles.card}
-              >
-                <img
-                  className={styles.image}
-                  alt="image not available"
-                  src={launch.links.mission_patch}
-                />
-                <h3>{launch.mission_name}</h3>
-                <span>
-                  <strong>Rocket:</strong> {launch.rocket.rocket_name}{" "}
-                </span>
-                <br></br>
-                <span>
-                  <strong>Launch Date:</strong>{" "}
-                  {new Date(launch.launch_date_local).toLocaleDateString(
-                    "en-US"
-                  )}
-                </span>
-                <br></br>
-                <span>
-                  <strong>Location:</strong> {launch.launch_site.site_name_long}{" "}
-                </span>
-              </a>
+              <Link href={ launch.id} key={launch.id}>
+                <a href={launch.links.video_link} className={styles.card}>
+                  <img
+                    className={styles.image}
+                    alt="image not available"
+                    src={launch.links.mission_patch}
+                  />
+                  <h3>{launch.mission_name}</h3>
+                  <span>
+                    <strong>Rocket:</strong> {launch.rocket.rocket.id}{" "}
+                  </span>
+                  <br></br>
+                  <span>
+                    <strong>Launch Date:</strong>{" "}
+                    {new Date(launch.launch_date_local).toLocaleDateString(
+                      "en-US"
+                    )}
+                  </span>
+                  <br></br>
+                  <span>
+                    <strong>Location:</strong>{" "}
+                    {launch.launch_site.site_name_long}{" "}
+                  </span>
+                </a>
+              </Link>
             );
           })}
         </div>
@@ -91,7 +91,11 @@ export async function getStaticProps() {
             mission_patch
           }
           rocket {
+            rocket_type
             rocket_name
+            rocket {
+              id
+            }
           }
         }
       }
