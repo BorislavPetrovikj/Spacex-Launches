@@ -107,6 +107,9 @@
   height: 1em;
   margin-left: 0.5rem;
 }
+.image{
+  width: 100%;
+}
 
 @media (max-width: 600px) {
   .grid {
